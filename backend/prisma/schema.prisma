@@ -299,3 +299,9 @@ model AuditEvent {
 
   @@index([caseId, createdAt])
 }
+
+/// Running numbers for reference codes, one row per prefix and fiscal year.
+model Counter {
+  key   String @id
+  value Int    @default(0)
+}
