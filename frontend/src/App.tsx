@@ -10,8 +10,10 @@ import { CaseDetailPage } from '@/pages/CaseDetailPage';
 import { CasesPage } from '@/pages/CasesPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { StrPage } from '@/pages/StrPage';
 import { SubjectProfilePage } from '@/pages/SubjectProfilePage';
 import { SubjectsPage } from '@/pages/SubjectsPage';
+import { UploadPage } from '@/pages/UploadPage';
 
 function RequireRole({ roles, children }: { roles: Role[]; children: ReactNode }) {
   const { user } = useAuth();
@@ -39,6 +41,8 @@ export default function App() {
         <Route path="cases" element={<RequireRole roles={STAFF}><CasesPage /></RequireRole>} />
         <Route path="cases/:reference" element={<RequireRole roles={STAFF}><CaseDetailPage /></RequireRole>} />
         <Route path="subjects" element={<RequireRole roles={STAFF}><SubjectsPage /></RequireRole>} />
+        <Route path="report/str" element={<RequireRole roles={['REPORTING_OFFICER']}><StrPage /></RequireRole>} />
+        <Route path="report/transactions" element={<RequireRole roles={['REPORTING_OFFICER']}><UploadPage /></RequireRole>} />
         <Route path="subjects/:id" element={<RequireRole roles={STAFF}><SubjectProfilePage /></RequireRole>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
