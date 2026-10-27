@@ -6,6 +6,8 @@ import { useAuth } from '@/lib/auth';
 import type { Role } from '@/lib/types';
 import { AlertDetailPage } from '@/pages/AlertDetailPage';
 import { AlertsPage } from '@/pages/AlertsPage';
+import { CaseDetailPage } from '@/pages/CaseDetailPage';
+import { CasesPage } from '@/pages/CasesPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { LoginPage } from '@/pages/LoginPage';
 
@@ -32,6 +34,8 @@ export default function App() {
         <Route index element={<DashboardPage />} />
         <Route path="alerts" element={<AlertsPage />} />
         <Route path="alerts/:reference" element={<AlertDetailPage />} />
+        <Route path="cases" element={<RequireRole roles={STAFF}><CasesPage /></RequireRole>} />
+        <Route path="cases/:reference" element={<RequireRole roles={STAFF}><CaseDetailPage /></RequireRole>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

@@ -248,10 +248,30 @@ async function main() {
   });
   await cases.transition(prakash, c6.caseId!, { to: CaseStatus.CLOSED, note: 'Agree, no suspicion remains.' });
 
-  // Case activity happened over the last weeks, not all just now.
-  await prisma.$executeRaw`UPDATE "Case" SET "createdAt" = "createdAt" - interval '6 days', "dueAt" = "dueAt" - interval '6 days'`;
-  await prisma.$executeRaw`UPDATE "AuditEvent" SET "createdAt" = "createdAt" - interval '6 days' + (random() * interval '5 days')`;
-  await prisma.$executeRaw`UPDATE "CaseNote" SET "createdAt" = "createdAt" - interval '3 days'`;
+  // Spread case activity over the days since each case was opened, keeping the real order of events.
+  await prisma.$executeRaw`
+    UPDATE "Case" c SET "createdAt" = sub.opened, "dueAt" = c."dueAt" - (c."createdAt" - sub.opened)
+    FROM (SELECT "caseId", MAX("createdAt") + interval '3 hours' AS opened FROM "Alert" WHERE "caseId" IS NOT NULL GROUP BY 1) sub
+    WHERE c.id = sub."caseId"`;
+  await prisma.$executeRaw`
+    WITH items AS (
+      SELECT 'e' AS kind, id, "caseId", "createdAt" FROM "AuditEvent" WHERE "caseId" IS NOT NULL
+      UNION ALL SELECT 'n', id, "caseId", "createdAt" FROM "CaseNote"
+    ), ranked AS (
+      SELECT i.kind, i.id, c."createdAt" + LEAST(interval '8 hours', (now() - interval '2 hours' - c."createdAt") / COUNT(*) OVER w)
+        * (ROW_NUMBER() OVER (w ORDER BY i."createdAt", i.kind) - 1) AS at
+      FROM items i JOIN "Case" c ON c.id = i."caseId"
+      WINDOW w AS (PARTITION BY i."caseId")
+    ), events AS (
+      UPDATE "AuditEvent" e SET "createdAt" = r.at FROM ranked r WHERE r.kind = 'e' AND e.id = r.id
+    )
+    UPDATE "CaseNote" n SET "createdAt" = r.at FROM ranked r WHERE r.kind = 'n' AND n.id = r.id`;
+  await prisma.$executeRaw`
+    UPDATE "Case" c SET
+      "disseminatedAt" = CASE WHEN c."disseminatedAt" IS NOT NULL THEN sub.decided END,
+      "closedAt" = CASE WHEN c."closedAt" IS NOT NULL THEN sub.decided END
+    FROM (SELECT "caseId", MAX("createdAt") AS decided FROM "AuditEvent" WHERE action = 'case.status' GROUP BY 1) sub
+    WHERE c.id = sub."caseId" AND (c."disseminatedAt" IS NOT NULL OR c."closedAt" IS NOT NULL)`;
 
   await app.close();
   const counts = { alerts: await prisma.alert.count(), cases: await prisma.case.count(), transactions: await prisma.transaction.count() };
