@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { Spinner } from '@/components/ui';
 import { useAuth } from '@/lib/auth';
 import type { Role } from '@/lib/types';
+import { DashboardPage } from '@/pages/DashboardPage';
 import { LoginPage } from '@/pages/LoginPage';
 
 function RequireRole({ roles, children }: { roles: Role[]; children: ReactNode }) {
@@ -26,7 +27,7 @@ export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<div />} />
+        <Route index element={<DashboardPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
