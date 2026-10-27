@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { Spinner } from '@/components/ui';
 import { useAuth } from '@/lib/auth';
 import type { Role } from '@/lib/types';
+import { AccountPage } from '@/pages/AccountPage';
 import { AlertDetailPage } from '@/pages/AlertDetailPage';
 import { AlertsPage } from '@/pages/AlertsPage';
 import { CaseDetailPage } from '@/pages/CaseDetailPage';
@@ -14,6 +15,7 @@ import { StrPage } from '@/pages/StrPage';
 import { SubjectProfilePage } from '@/pages/SubjectProfilePage';
 import { SubjectsPage } from '@/pages/SubjectsPage';
 import { UploadPage } from '@/pages/UploadPage';
+import { UsersPage } from '@/pages/UsersPage';
 
 function RequireRole({ roles, children }: { roles: Role[]; children: ReactNode }) {
   const { user } = useAuth();
@@ -44,10 +46,11 @@ export default function App() {
         <Route path="report/str" element={<RequireRole roles={['REPORTING_OFFICER']}><StrPage /></RequireRole>} />
         <Route path="report/transactions" element={<RequireRole roles={['REPORTING_OFFICER']}><UploadPage /></RequireRole>} />
         <Route path="subjects/:id" element={<RequireRole roles={STAFF}><SubjectProfilePage /></RequireRole>} />
+        <Route path="admin/users" element={<RequireRole roles={['ADMIN']}><UsersPage /></RequireRole>} />
+        <Route path="account" element={<AccountPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   );
 }
 
-export { RequireRole, STAFF };

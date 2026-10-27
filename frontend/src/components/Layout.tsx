@@ -53,14 +53,15 @@ export function Layout() {
           ))}
         </nav>
         <div className="hidden border-t border-white/10 px-5 py-4 lg:absolute lg:inset-x-0 lg:bottom-0 lg:block">
-          <p className="truncate text-sm font-medium text-white">{user.name}</p>
+          <NavLink to="/account" className="block truncate text-sm font-medium text-white hover:underline">{user.name}</NavLink>
           <p className="truncate text-xs text-brand-100/70">{ROLE_LABEL[user.role]}{user.designation ? ` · ${user.designation}` : ''}</p>
           <button onClick={logout} className="mt-3 text-xs font-semibold text-brand-100/80 hover:text-white">Sign out</button>
         </div>
       </aside>
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <div className="mb-4 flex justify-end lg:hidden">
-          <button onClick={logout} className="text-xs font-semibold text-slate-500">Sign out {user.name}</button>
+          <NavLink to="/account" className="mr-4 text-xs font-semibold text-slate-500">Account</NavLink>
+          <button onClick={logout} className="text-xs font-semibold text-slate-500">Sign out</button>
         </div>
         <Outlet />
       </main>
