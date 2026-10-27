@@ -8,7 +8,7 @@ import { page } from '../common/http';
 import { nextReference } from '../common/references';
 import { PrismaService } from '../prisma/prisma.service';
 
-enum TriageDecision {
+export enum TriageDecision {
   FALSE_POSITIVE = 'FALSE_POSITIVE',
   NEW_CASE = 'NEW_CASE',
   LINK_CASE = 'LINK_CASE',
