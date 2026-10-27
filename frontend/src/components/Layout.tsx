@@ -29,36 +29,38 @@ export function Layout() {
   const items = NAV.filter((n) => !n.roles || n.roles.includes(user.role));
 
   return (
-    <div className="min-h-screen lg:pl-64">
-      <aside className="border-b border-brand-900 bg-brand-800 text-brand-100 lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 lg:border-b-0">
-        <div className="flex items-center gap-3 px-5 py-4 lg:py-6">
-          <img src="/favicon.svg" alt="" className="h-9 w-9" />
-          <div className="leading-tight">
-            <p className="text-sm font-semibold text-white">Case Management</p>
-            <p className="text-xs text-brand-100/70">{isStaff(user) ? 'Financial Intelligence Unit' : user.entity?.name}</p>
+    <div className="min-h-screen lg:flex">
+      <aside className="border-b border-brand-900 bg-brand-800 text-brand-100 lg:w-64 lg:shrink-0 lg:border-b-0">
+        <div className="lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col">
+          <div className="flex items-center gap-3 px-5 py-4 lg:py-6">
+            <img src="/favicon.svg" alt="" className="h-9 w-9" />
+            <div className="leading-tight">
+              <p className="text-sm font-semibold text-white">Case Management</p>
+              <p className="text-xs text-brand-100/70">{isStaff(user) ? 'Financial Intelligence Unit' : user.entity?.name}</p>
+            </div>
+          </div>
+          <nav className="flex gap-1 overflow-x-auto px-3 pb-3 lg:flex-col lg:overflow-visible">
+            {items.map((n) => (
+              <NavLink
+                key={n.to}
+                to={n.to}
+                end={n.to === '/'}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition ${isActive ? 'bg-white/10 text-white' : 'text-brand-100/80 hover:bg-white/5 hover:text-white'}`}
+              >
+                <Icon d={n.icon} />
+                {n.label}
+              </NavLink>
+            ))}
+          </nav>
+          <div className="hidden border-t border-white/10 px-5 py-4 lg:mt-auto lg:block">
+            <NavLink to="/account" className="block truncate text-sm font-medium text-white hover:underline">{user.name}</NavLink>
+            <p className="truncate text-xs text-brand-100/70">{ROLE_LABEL[user.role]}{user.designation ? ` · ${user.designation}` : ''}</p>
+            <button onClick={logout} className="mt-3 text-xs font-semibold text-brand-100/80 hover:text-white">Sign out</button>
           </div>
         </div>
-        <nav className="flex gap-1 overflow-x-auto px-3 pb-3 lg:flex-col lg:overflow-visible">
-          {items.map((n) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              end={n.to === '/'}
-              className={({ isActive }) =>
-                `flex items-center gap-3 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition ${isActive ? 'bg-white/10 text-white' : 'text-brand-100/80 hover:bg-white/5 hover:text-white'}`}
-            >
-              <Icon d={n.icon} />
-              {n.label}
-            </NavLink>
-          ))}
-        </nav>
-        <div className="hidden border-t border-white/10 px-5 py-4 lg:absolute lg:inset-x-0 lg:bottom-0 lg:block">
-          <NavLink to="/account" className="block truncate text-sm font-medium text-white hover:underline">{user.name}</NavLink>
-          <p className="truncate text-xs text-brand-100/70">{ROLE_LABEL[user.role]}{user.designation ? ` · ${user.designation}` : ''}</p>
-          <button onClick={logout} className="mt-3 text-xs font-semibold text-brand-100/80 hover:text-white">Sign out</button>
-        </div>
       </aside>
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+      <main className="mx-auto w-full min-w-0 max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <div className="mb-4 flex justify-end lg:hidden">
           <NavLink to="/account" className="mr-4 text-xs font-semibold text-slate-500">Account</NavLink>
           <button onClick={logout} className="text-xs font-semibold text-slate-500">Sign out</button>

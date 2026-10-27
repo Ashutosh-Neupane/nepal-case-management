@@ -51,7 +51,7 @@ export function PageHeader({ title, subtitle, actions, back }: { title: ReactNod
 
 export function Section({ title, actions, children, className = '' }: { title: ReactNode; actions?: ReactNode; children: ReactNode; className?: string }) {
   return (
-    <section className={`card ${className}`}>
+    <section className={`card min-w-0 ${className}`}>
       <header className="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-3">
         <h2 className="text-sm font-semibold text-slate-800">{title}</h2>
         {actions}

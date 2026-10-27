@@ -124,12 +124,11 @@ export function DashboardPage() {
                   const late = new Date(c.dueAt) < new Date();
                   return (
                     <li key={c.id}>
-                      <Link to={`/cases/${encodeURIComponent(c.reference)}`} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-5 py-3 hover:bg-slate-50">
+                      <Link to={`/cases/${encodeURIComponent(c.reference)}`} className="grid gap-1.5 px-5 py-3 hover:bg-slate-50 sm:flex sm:items-center sm:gap-4">
                         <span className="font-mono text-xs text-slate-500">{c.reference}</span>
-                        <span className="min-w-0 flex-1 truncate text-sm font-medium">{c.title}</span>
-                        <PriorityBadge priority={c.priority} />
-                        <CaseStatusBadge status={c.status} />
-                        <span className={`w-32 text-right text-xs ${late ? 'font-semibold text-crimson-700' : 'text-slate-500'}`}>
+                        <span className="min-w-0 text-sm font-medium sm:flex-1 sm:truncate">{c.title}</span>
+                        <span className="flex gap-2"><PriorityBadge priority={c.priority} /><CaseStatusBadge status={c.status} /></span>
+                        <span className={`text-xs sm:w-32 sm:text-right ${late ? 'font-semibold text-crimson-700' : 'text-slate-500'}`}>
                           {late ? `Overdue ${relative(c.dueAt).replace(' ago', '')}` : `Due ${relative(c.dueAt)}`}
                         </span>
                       </Link>
@@ -139,7 +138,7 @@ export function DashboardPage() {
               </ul>
             ) : <Empty>No active cases.</Empty>}
           </Section>
-          <div className="space-y-6">
+          <div className="min-w-0 space-y-6">
             <Section title="Alerts by reporting institution">
               <Bars rows={(data.reportingEntities ?? []).map((e) => ({ label: e.name, value: e.alerts }))} />
             </Section>

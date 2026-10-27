@@ -50,7 +50,7 @@ export function StrPage() {
     <>
       <PageHeader title="Suspicious transaction report" subtitle="Report activity you suspect is linked to money laundering or terrorism financing. The customer must not be told." />
       <form onSubmit={submit} className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <Section title="Subject">
             <div className="grid gap-4 p-5 sm:grid-cols-2">
               <div className="flex gap-2 sm:col-span-2">

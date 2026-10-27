@@ -69,7 +69,7 @@ export function UploadPage() {
     <>
       <PageHeader title="Upload transactions" subtitle="Send threshold and other reportable transactions as CSV. Detection rules run on every account in the file." />
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <Section title="File" actions={<a href={template} download="transactions-template.csv" className="text-xs font-semibold text-brand-700">Download template</a>}>
             <label className="m-5 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 px-6 py-10 text-center hover:border-brand-400">
               <span className="text-sm font-medium text-slate-800">{fileName || 'Choose a CSV file'}</span>

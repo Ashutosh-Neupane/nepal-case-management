@@ -123,7 +123,7 @@ export function AlertDetailPage() {
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <Section title="Why this was raised">
             <div className="space-y-4 px-5 py-4">
               <p className="text-slate-800">{alert.summary}</p>
@@ -142,7 +142,7 @@ export function AlertDetailPage() {
           </Section>
         </div>
 
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-6">
           <Section title="Subject" actions={isStaff(user) && <Link to={`/subjects/${s.id}`} className="text-xs font-semibold text-brand-700">Full profile</Link>}>
             <dl className="space-y-3 px-5 py-4 text-sm">
               <div className="flex items-center gap-2 text-base font-semibold">{s.name}{s.isPep && <PepBadge />}</div>
