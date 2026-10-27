@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
+import { AlertsModule } from './alerts/alerts.module';
 import { AuthModule } from './auth/auth.module';
+import { CasesModule } from './cases/cases.module';
 import { AuthGuard } from './common/auth';
 import { ReportsModule } from './detection/reports.module';
 import { PrismaModule } from './prisma/prisma.service';
@@ -16,6 +18,8 @@ import { PrismaModule } from './prisma/prisma.service';
     }),
     AuthModule,
     ReportsModule,
+    AlertsModule,
+    CasesModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AuthGuard }],
 })
