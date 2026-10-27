@@ -29,7 +29,7 @@ function Stepper({ c }: { c: CaseDetail }) {
             <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-semibold ${done ? 'bg-brand-700 text-white' : active ? 'bg-white text-brand-700 ring-2 ring-brand-700' : 'bg-slate-100 text-slate-400'}`}>
               {done ? '✓' : i + 1}
             </span>
-            <span className={`truncate font-medium ${active ? 'text-brand-800' : done ? 'text-slate-800' : 'text-slate-400'}`}>{label}</span>
+            <span className={`truncate font-medium ${active ? 'text-brand-800' : done ? 'text-slate-800' : 'text-slate-400'} max-sm:hidden`}>{label}</span>
           </li>
         );
       })}
@@ -250,17 +250,18 @@ export function CaseDetailPage() {
       <Decision c={c} />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <Section title={`Alerts · ${c.alerts.length}`} actions={<span className="text-xs text-slate-500">{unique.length} transactions · {rupeesShort(total)}</span>}>
             <ul className="divide-y divide-slate-100">
               {c.alerts.map((a) => (
-                <li key={a.id} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-5 py-3 text-sm">
-                  <Link to={`/alerts/${encodeURIComponent(a.reference)}`} className="font-mono text-xs font-semibold text-brand-700 hover:underline">{a.reference}</Link>
-                  <Badge tone="bg-white text-slate-600 ring-slate-200">{a.type === 'STR' ? 'STR' : RULE_LABEL[a.ruleCode ?? ''] ?? a.type}</Badge>
-                  <span className="min-w-0 flex-1 text-slate-700">{a.summary}</span>
-                  <span className="text-xs text-slate-500">{a.entity.code}</span>
-                  <Score value={a.score} />
-                  <AlertStatusBadge status={a.status} />
+                <li key={a.id} className="px-5 py-3 text-sm">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <Link to={`/alerts/${encodeURIComponent(a.reference)}`} className="font-mono text-xs font-semibold text-brand-700 hover:underline">{a.reference}</Link>
+                    <Badge tone="bg-white text-slate-600 ring-slate-200">{a.type === 'STR' ? 'STR' : RULE_LABEL[a.ruleCode ?? ''] ?? a.type}</Badge>
+                    <span className="text-xs text-slate-500">{a.entity.code}</span>
+                    <span className="ml-auto flex items-center gap-3"><Score value={a.score} /><AlertStatusBadge status={a.status} /></span>
+                  </div>
+                  <p className="mt-1 text-slate-700">{a.summary}</p>
                 </li>
               ))}
             </ul>
@@ -269,7 +270,7 @@ export function CaseDetailPage() {
           <Notes c={c} canWrite={canWrite} />
         </div>
 
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-6">
           <Details c={c} editable={active && (user!.role === 'ANALYST' || supervisor)} supervisor={supervisor} />
           <Section title="Subjects">
             <ul className="divide-y divide-slate-100">
