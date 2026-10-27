@@ -46,7 +46,7 @@ function TrendChart({ data }: { data: Summary['alerts']['trend'] }) {
             contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', fontSize: 12 }}
             cursor={{ stroke: '#94a3b8', strokeDasharray: '3 3' }}
           />
-          <Area type="monotone" dataKey="count" stroke="#003893" strokeWidth={2} fill="url(#trendFill)" activeDot={{ r: 4, stroke: '#fff', strokeWidth: 2 }} />
+          <Area type="linear" dataKey="count" stroke="#003893" strokeWidth={2} fill="url(#trendFill)" activeDot={{ r: 4, stroke: '#fff', strokeWidth: 2 }} />
         </AreaChart>
       </ResponsiveContainer>
     </div>
@@ -124,7 +124,7 @@ export function DashboardPage() {
                   const late = new Date(c.dueAt) < new Date();
                   return (
                     <li key={c.id}>
-                      <Link to={`/cases/${c.reference}`} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-5 py-3 hover:bg-slate-50">
+                      <Link to={`/cases/${encodeURIComponent(c.reference)}`} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-5 py-3 hover:bg-slate-50">
                         <span className="font-mono text-xs text-slate-500">{c.reference}</span>
                         <span className="min-w-0 flex-1 truncate text-sm font-medium">{c.title}</span>
                         <PriorityBadge priority={c.priority} />
